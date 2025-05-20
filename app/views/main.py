@@ -28,7 +28,7 @@ table_status = {
 
 @bp.route("/", methods=["POST", "GET"])
 def index():
-    return render_template("pedro.html")
+    return render_template("main/pedro.html")
 
 
 @bp.route("/pedro")
@@ -39,6 +39,11 @@ def pedro():
 @bp.route("/main")
 def main():
     return render_template("main/main.html")
+
+
+@bp.route("/hazard", methods=["GET"])
+def hazard():
+    return render_template("main/hazard.html")
 
 
 # @bp.route("/map", methods=["GET", "POST"])
