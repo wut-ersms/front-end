@@ -46,6 +46,16 @@ def hazard():
     return render_template("main/hazard.html")
 
 
+@bp.route("/transaction_history", methods=["GET", "POST"])
+def history():
+    return render_template("transaction_history/history.html")
+
+
+@bp.route("/order", methods=["GET", "POST"])
+def orders():
+    return render_template("order/order.html")
+
+
 # @bp.route("/map", methods=["GET", "POST"])
 # def map():
 #     return render_template("main/mapa.html", table_status=table_status)
