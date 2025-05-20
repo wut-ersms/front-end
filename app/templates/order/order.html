@@ -1,21 +1,137 @@
 {% extends 'base.html' %}
 {% block content %}
-    <!-- Hero Section -->
-    <section class="bg-light p-5">
-        <div class="container text-center">
-            <h1>Orders</h1>
+<section class="bg-light p-5">
+    <div class="container text-center">
+        <h1>Order</h1>
+    </div>
+</section>
+
+<section class="container my-5">
+    <h2 class="text-center mb-4">New Order</h2>
+
+    <form id="order-form" class="card p-4 shadow-sm">
+        <!-- Instrument Input with Autocomplete -->
+        <div class="mb-3">
+            <label for="instrument" class="form-label">Instrument (e.g., NVDA.US)</label>
+            <input list="instrument-list" class="form-control" id="instrument" placeholder="Enter instrument symbol" required>
+            <datalist id="instrument-list">
+                <option value="AAPL.US">
+                <option value="NVDA.US">
+                <option value="BTC.USD">
+                <option value="SPY.US">
+                <option value="GOLD.USD">
+            </datalist>
         </div>
-    </section>
 
-    <!-- Featured Products -->
-    <section class="container my-5">
-        <h2 class="text-center mb-4">Your Orders</h2>
+        <!-- Instrument Type -->
+        <div class="mb-3">
+            <label class="form-label">Instrument Type</label>
+            <input type="text" class="form-control" id="instrument-type" disabled value="--">
+        </div>
 
-    </section>
+        <!-- Volume Input -->
+        <div class="mb-3">
+            <label for="volume" class="form-label">Volume</label>
+            <input type="number" class="form-control" id="volume" min="1" step="1" placeholder="Enter volume" required>
+        </div>
 
+        <!-- Current Price -->
+        <div class="mb-3">
+            <label class="form-label">Current Price (USD)</label>
+            <input type="text" class="form-control" id="price" disabled value="--">
+        </div>
 
-    <button type="button">do something</button>
+        <!-- Final Price -->
+        <div class="mb-3">
+            <label class="form-label">Total Estimated Price</label>
+            <input type="text" class="form-control" id="final-price" disabled value="--">
+        </div>
 
+        <!-- Stop Loss -->
+        <div class="mb-3">
+            <label for="stopLoss" class="form-label">Stop Loss (Optional)</label>
+            <input type="number" class="form-control" id="stopLoss" step="0.01" placeholder="Enter stop loss price">
+        </div>
 
+        <!-- Commission -->
+        <div class="mb-3">
+            <label class="form-label">Commission</label>
+            <input type="text" class="form-control" disabled value="0.5% per order">
+        </div>
 
+        <!-- Currency -->
+        <div class="mb-3">
+            <label class="form-label">Currency</label>
+            <input type="text" class="form-control" disabled value="USD">
+        </div>
+
+        <!-- Buy/Sell Buttons with Markup Info -->
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-success w-45" id="buy-button">Buy (incl. +0.1%)</button>
+            <button type="button" class="btn btn-danger w-45" id="sell-button" disabled>Sell (incl. -0.1%)</button>
+        </div>
+    </form>
+</section>
+
+<script>
+    const instrumentData = {
+        "AAPL.US": { price: 189.55, type: "Stock", holdings: 5 },
+        "NVDA.US": { price: 915.60, type: "Stock", holdings: 10 },
+        "BTC.USD": { price: 67000, type: "Cryptocurrency", holdings: 0.5 },
+        "SPY.US": { price: 520.00, type: "ETF", holdings: 0 },
+        "GOLD.USD": { price: 2400, type: "Commodity", holdings: 2 }
+    };
+
+    const instrumentInput = document.getElementById("instrument");
+    const priceField = document.getElementById("price");
+    const typeField = document.getElementById("instrument-type");
+    const volumeField = document.getElementById("volume");
+    const finalPriceField = document.getElementById("final-price");
+    const sellButton = document.getElementById("sell-button");
+    const buyButton = document.getElementById("buy-button");
+
+    function updateInstrumentDetails() {
+        const symbol = instrumentInput.value.trim().toUpperCase();
+        const data = instrumentData[symbol];
+
+        if (data) {
+            priceField.value = data.price.toFixed(2);
+            typeField.value = data.type;
+            sellButton.disabled = data.holdings <= 0;
+            updateFinalPrice();
+        } else {
+            priceField.value = "--";
+            typeField.value = "--";
+            finalPriceField.value = "--";
+            sellButton.disabled = true;
+        }
+    }
+
+    function updateFinalPrice() {
+        const symbol = instrumentInput.value.trim().toUpperCase();
+        const volume = parseFloat(volumeField.value);
+        const data = instrumentData[symbol];
+
+        if (data && !isNaN(volume)) {
+            const rawTotal = volume * data.price;
+            finalPriceField.value = rawTotal.toFixed(2) + " USD";
+        } else {
+            finalPriceField.value = "--";
+        }
+    }
+
+    instrumentInput.addEventListener("input", updateInstrumentDetails);
+    volumeField.addEventListener("input", updateFinalPrice);
+
+    document.getElementById("order-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const symbol = instrumentInput.value.trim().toUpperCase();
+        alert(`Buy order for ${symbol} submitted with markup (+0.1%)`);
+    });
+
+    sellButton.addEventListener("click", function () {
+        const symbol = instrumentInput.value.trim().toUpperCase();
+        alert(`Sell order for ${symbol} submitted with discount (-0.1%)`);
+    });
+</script>
 {% endblock %}
