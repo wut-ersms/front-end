@@ -18,17 +18,10 @@ bp = Blueprint(
     url_prefix="/",
 )
 
-table_status = {
-    1: {"status": "free", "sector": 1},
-    2: {"status": "occupied", "sector": 1},
-    3: {"status": "occupied", "sector": 2},
-    4: {"status": "occupied", "sector": 2},
-}
-
 
 @bp.route("/", methods=["POST", "GET"])
 def index():
-    return render_template("main/pedro.html")
+    return render_template("main/main.html")
 
 
 @bp.route("/pedro")
@@ -36,9 +29,9 @@ def pedro():
     return render_template("main/pedro.html")
 
 
-@bp.route("/main")
-def main():
-    return render_template("main/main.html")
+# @bp.route("/main")
+# def main():
+#     return render_template("main/main.html")
 
 
 @bp.route("/hazard", methods=["GET"])
