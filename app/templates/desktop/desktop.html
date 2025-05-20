@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <section class="bg-light p-4">
     <div class="container text-center">
         <h1>Trading Desktop</h1>
@@ -13,27 +12,24 @@
         <label for="instrumentSelector" class="form-label">Select Instrument</label>
         <input list="instruments" class="form-control" id="instrumentSelector" placeholder="e.g. AAPL.US">
         <datalist id="instruments">
-            <option value="AAPL.US">
-            <option value="BTC.USD">
-            <option value="NVDA.US">
-            <option value="GOLD.USD">
+            <!-- JS uzupełni listę -->
         </datalist>
     </div>
 
-    <!-- Chart Section -->
+    <!-- Charts -->
     <div class="row">
         <div class="col-md-12 mb-4">
             <canvas id="priceChart" height="100"></canvas>
         </div>
         <div class="col-md-6 mb-4">
-            <canvas id="macdChart" height="80"></canvas>
+            <canvas id="macdChart" height="120"></canvas>
         </div>
         <div class="col-md-6 mb-4">
-            <canvas id="volumeChart" height="80"></canvas>
+            <canvas id="volumeChart" height="120"></canvas>
         </div>
     </div>
 
-    <!-- Open Positions Table -->
+    <!-- Open Positions -->
     <h4 class="mt-4">Open Positions</h4>
     <div class="table-responsive">
         <table class="table table-bordered" id="positionsTable">
@@ -50,7 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- JS will populate -->
+                <!-- JS dynamicznie -->
             </tbody>
         </table>
     </div>
