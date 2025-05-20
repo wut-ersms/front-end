@@ -21,7 +21,24 @@ bp = Blueprint(
 
 @bp.route("/", methods=["GET"])
 def index():
-    return render_template("main/main.html")
+    stocks = [
+        {
+            "name": "NVIDIA",
+            "description": "High performance GPUs and AI leader.",
+            "image": "images/NVIDIA_logo.jpg",
+        },
+        {
+            "name": "Apple",
+            "description": "Innovative consumer electronics and software.",
+            "image": "images/Apple_logo.png",
+        },
+        {
+            "name": "Tesla",
+            "description": "Electric vehicles and clean energy.",
+            "image": "images/tesla_logo.png",
+        },
+    ]
+    return render_template("main/main.html", stocks=stocks)
 
 
 @bp.route("/pedro")

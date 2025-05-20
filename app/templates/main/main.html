@@ -3,40 +3,43 @@
     <!-- Hero Section -->
     <section class="bg-light p-5">
         <div class="container text-center">
-            <h1>Welcome to Our Food court</h1>
+            <h1>Ultra Hiper Stock Market</h1>
+        </div>
+    </section>
+
+    <section>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="{{ url_for('desktop.index') }}" class="btn btn-primary btn-lg">Desktop</a>
         </div>
     </section>
 
     <!-- Featured Products -->
-    <section class="container my-5">
-        <h2 class="text-center mb-4">Featured Restaurants</h2>
+    <section>
+        <h2 class="text-center mb-4">Currently Popular Stocks</h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Product">
+            {% for stock in stocks %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename=stock.image) }}" class="card-img-top img-fluid" alt="{{ stock.name }} Logo" style="height: 200px; object-fit: contain; background-color: #f8f9fa;">
                     <div class="card-body">
-                        <h5 class="card-title">Restaurant</h5>
-                        <p class="card-text">Description of the restaurant goes here.</p>
-                        <a href="#" class="btn btn-primary">Order Now</a>
+                        <h5 class="card-title">{{ stock.name }}</h5>
+                        <p class="card-text">{{ stock.description }}</p>
+                        <a href="#" class="btn btn-primary">Buy Now</a>
                     </div>
                 </div>
             </div>
-
-            <!-- <button type="button">
-                Historia
-            </button> -->
-
-            <a href="{{ url_for('transactions_history.index') }}" class="btn btn-primary">History</a>
-
-            <a href="{{ url_for('order.index') }}" class="btn btn-primary">New Order</a>
-
-            <!-- <form action="/historia" method="post">
-                <button type="button">Nowe Zlecenie </button>
-            </form> -->
-
-            <!-- Repeat for other products -->
+            {% endfor %}
         </div>
     </section>
 
+    <section>
+        <center>
+
+        <a href="{{ url_for('transactions_history.index') }}" class="btn btn-primary">History</a>
+
+        <a href="{{ url_for('order.index') }}" class="btn btn-primary">New Order</a>
+
+        </center>
+    </section>
 
 {% endblock %}

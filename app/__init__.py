@@ -12,10 +12,11 @@ def create_app():
 
     socketio.init_app(app)
 
-    from .views import main, transactions_history, order
+    from .views import main, transactions_history, order, desktop
 
     app.register_blueprint(main.bp)
     app.register_blueprint(transactions_history.bp)
     app.register_blueprint(order.bp)
+    app.register_blueprint(desktop.bp)
 
     return app

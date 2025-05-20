@@ -10,11 +10,11 @@ bp = Blueprint(
     __name__,
     template_folder="templates",
     static_folder="static",
-    url_prefix="/",
+    url_prefix="/transaction_history",
 )
 
 
-@bp.route("/transaction_history")
+@bp.route("/")
 def index():
     transactions = [
         {
