@@ -1,24 +1,38 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <!-- Hero Section -->
-    <section class="bg-light p-5">
-        <div class="container text-center">
-            <h1>Welcome to Our Food court</h1>
-        </div>
-    </section>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Transactions History</h2>
 
-    <!-- Featured Products -->
-    <section class="container my-5">
-        <h2 class="text-center mb-4">History</h2>
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Type</th>
+                <th>Volume</th>
+                <th>Market Value</th>
+                <th>Open Price</th>
+                <th>Close Price</th>
+                <th>Net Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tx in transactions %}
+            <tr>
+                <td>{{ tx.type|capitalize }}</td>
+                <td>{{ tx.volume }}</td>
+                <td>{{ tx.market_value }} PLN</td>
+                <td>{{ tx.open_price }} PLN</td>
+                <td>{{ tx.close_price }} PLN</td>
+                <td>
+                    <span style="color: {% if tx.net_profit >= 0 %}green{% else %}red{% endif %};">
+                        {{ tx.net_profit }} PLN
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    </section>
-
-
-    <a href="{{ url_for('main.index') }}" class="btn btn-primary">Go Back</a>
-    <!--
-    <button type="button">do something</button>
-    -->
-
-
-
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary mt-4">Back to Main</a>
+</div>
 {% endblock %}

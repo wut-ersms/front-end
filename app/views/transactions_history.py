@@ -1,13 +1,8 @@
 from flask import render_template, Blueprint, request, jsonify
-
-# from ..models import Product
 import json
-
-# from ..map_utils import choose_sector_image, choose_total_image, get_free_tables_per_sector
 from .. import socketio
 import logging
 
-# Ustawienie poziomu logowania na DEBUG (lub inny poziom według potrzeb)
 logging.basicConfig(level=logging.DEBUG)
 
 bp = Blueprint(
@@ -19,6 +14,27 @@ bp = Blueprint(
 )
 
 
-@bp.route("/transaction_history", methods=["POST", "GET"])
-def main():
-    return render_template("main/main.html")
+@bp.route("/transaction_history")
+def index():
+    transactions = [
+        {
+            "type": "buy",
+            "volume": 10,
+            "market_value": 1200.00,
+            "open_price": 115.00,
+            "close_price": 120.00,
+            "net_profit": 50.00,
+        },
+        {
+            "type": "sell",
+            "volume": 5,
+            "market_value": 600.00,
+            "open_price": 125.00,
+            "close_price": 115.00,
+            "net_profit": -50.00,
+        },
+    ]
+
+    return render_template(
+        "transaction_history/history.html", transactions=transactions
+    )

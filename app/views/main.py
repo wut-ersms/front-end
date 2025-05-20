@@ -19,7 +19,7 @@ bp = Blueprint(
 )
 
 
-@bp.route("/", methods=["POST", "GET"])
+@bp.route("/", methods=["GET"])
 def index():
     return render_template("main/main.html")
 
@@ -39,14 +39,9 @@ def hazard():
     return render_template("main/hazard.html")
 
 
-@bp.route("/transaction_history", methods=["GET", "POST"])
-def history():
-    return render_template("transaction_history/history.html")
-
-
-@bp.route("/order", methods=["GET", "POST"])
-def orders():
-    return render_template("order/order.html")
+# @bp.route("/transaction_history", methods=["GET", "POST"])
+# def history():
+#     return render_template("transaction_history/history.html")
 
 
 # @bp.route("/map", methods=["GET", "POST"])
