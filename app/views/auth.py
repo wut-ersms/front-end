@@ -1,4 +1,5 @@
 from flask import Blueprint, session, redirect, url_for, request, flash, render_template
+from flask_dance.contrib.google import google
 import json
 from .. import socketio
 import logging
@@ -46,3 +47,19 @@ def logout():
 @bp.route("/register", methods=["GET"])
 def register():
     return render_template("auth/register.html")
+
+
+@bp.route("/google")
+def google_login():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v2/userinfo")
+    assert resp.ok, resp.text
+    user_info = resp.json()
+
+    session["user"] = {
+        "email": user_info["email"],
+        "name": user_info["name"],
+        "picture": user_info.get("picture"),
+    }
+    return redirect(url_for("main.index"))

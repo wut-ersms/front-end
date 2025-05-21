@@ -1,5 +1,7 @@
 from flask import Flask, session
 from flask_socketio import SocketIO
+from flask_dance.contrib.google import make_google_blueprint, google
+
 
 # from .config import Config
 
@@ -12,6 +14,14 @@ def create_app():
     app.secret_key = "twoj_super_tajny_klucz"
 
     socketio.init_app(app)
+
+    # google_bp = make_google_blueprint(
+    #     client_id=os.environ.get("GOOGLE_OAUTH_CLIENT_ID"),
+    #     client_secret=os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET"),
+    #     scope=["profile", "email"],
+    #     redirect_to="google_login",
+    # )
+    # app.register_blueprint(google_bp, url_prefix="/login")
 
     from .views import main, transactions_history, order, desktop, auth
 

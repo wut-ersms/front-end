@@ -9,3 +9,5 @@ psycopg2-binary>=2.8
 flask-socketio==5.3.6
 eventlet==0.36.1
 jsonify==0.5
+Flask-Dance[google]==7.1.0
+oauthlib==3.2.2
