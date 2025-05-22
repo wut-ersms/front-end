@@ -5,9 +5,9 @@
     <h2 class="text-center mb-4">Login</h2>
 
 
-    <!-- <a href="{{ url_for('auth.login') }}" class="btn btn-secondary mt-4">Login</a> -->
+    <a href="{{ url_for('auth.google_login') }}" class="btn btn-secondary mt-4">Google Login</a>
 
-    <form method="POST">
+    <!-- <form method="POST">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input id="username" name="username" class="form-control" required />
@@ -17,6 +17,6 @@
             <input id="password" name="password" type="password" class="form-control" required />
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    </form> -->
 </div>
 {% endblock %}

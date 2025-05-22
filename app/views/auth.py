@@ -17,36 +17,7 @@ bp = Blueprint(
 
 @bp.route("/", methods=["GET"])
 def index():
-    return render_template("auth/signup.html")
-
-
-@bp.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username == "admin" and password == "password":
-            session["logged_in"] = True
-            session["username"] = username
-            flash("Successfully logged in.", "success")
-            return redirect(url_for("main.index"))
-        else:
-            flash("Invalid username or password.", "danger")
-
     return render_template("auth/login.html")
-
-
-@bp.route("/logout")
-def logout():
-    session.clear()
-    flash("You have been logged out.", "info")
-    return redirect(url_for("main.index"))
-
-
-@bp.route("/register", methods=["GET"])
-def register():
-    return render_template("auth/register.html")
 
 
 @bp.route("/google")
@@ -62,4 +33,35 @@ def google_login():
         "name": user_info["name"],
         "picture": user_info.get("picture"),
     }
+    session["logged_in"] = True
+
     return redirect(url_for("main.index"))
+
+
+# @bp.route("/login", methods=["GET", "POST"])
+# def login():
+#     if request.method == "POST":
+#         username = request.form.get("username")
+#         password = request.form.get("password")
+
+#         if username == "admin" and password == "password":
+#             session["logged_in"] = True
+#             session["username"] = username
+#             flash("Successfully logged in.", "success")
+#             return redirect(url_for("main.index"))
+#         else:
+#             flash("Invalid username or password.", "danger")
+
+#     return render_template("auth/login.html")
+
+
+@bp.route("/logout")
+def logout():
+    session.clear()
+    flash("You have been logged out.", "info")
+    return redirect(url_for("main.index"))
+
+
+@bp.route("/register", methods=["GET"])
+def register():
+    return render_template("auth/register.html")

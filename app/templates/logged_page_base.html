@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% block default %}
+    {% endblock %}
+
+
+    {% if user_logged_in %}
+        {% block content_loggedin %}
+        {% endblock %}
+    {% else %}
+        {% block content_loggedout %}
+        {% endblock %}
+    {% endif %}
+
+{% endblock %}

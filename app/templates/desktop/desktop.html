@@ -1,67 +1,83 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'logged_page_base.html' %}
+
+{% block default %}
 <section class="bg-light p-4">
     <div class="container text-center">
         <h1>Trading Desktop</h1>
     </div>
 </section>
 
-<!-- <div class="container my-4"> -->
-<div class="container-fluid">
-    <!-- Instrument Selector -->
-    <div class="mb-3">
-        <label for="instrumentSelector" class="form-label">Select Instrument</label>
-        <input list="instruments" class="form-control" id="instrumentSelector" placeholder="e.g. AAPL.US">
-        <datalist id="instruments">
-            <!-- JS uzupełni listę -->
-        </datalist>
-    </div>
-
-    <!-- Charts -->
-    <div class="row">
-        <div class="col-md-12 mb-4">
-            <canvas id="priceChart" height="100"></canvas>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="macdChart" height="120"></canvas>
-        </div>
-        <div class="col-md-6 mb-4">
-            <canvas id="volumeChart" height="120"></canvas>
-        </div>
-    </div>
-
-    <!-- Open Positions -->
-    <h4 class="mt-4">Open Positions</h4>
-    <div class="table-responsive">
-        <table class="table table-bordered" id="positionsTable">
-            <thead class="table-light">
-                <tr>
-                    <th>Instrument</th>
-                    <th>Type</th>
-                    <th>Open Date</th>
-                    <th>Open Price</th>
-                    <th>Current Price</th>
-                    <th>Volume</th>
-                    <th>Profit (USD)</th>
-                    <th>Profit (%)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- JS dynamicznie -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Portfolio Summary -->
-    <div class="card p-3 mt-3">
-        <h5>Portfolio Summary</h5>
-        <p>Invested: <span id="invested"></span> USD</p>
-        <p>Free Cash: <span id="free-cash"></span> USD</p>
-        <p>Total Value: <span id="total"></span> USD</p>
-        <p>Profit: <span id="profit"></span> USD (<span id="profit-pct"></span>%)</p>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='desktop.js') }}"></script>
+{% endblock %}
+
+{% block content_loggedin %}
+
+    <!-- <div class="container my-4"> -->
+    <div class="container-fluid">
+        <!-- Instrument Selector -->
+        <div class="mb-3">
+            <label for="instrumentSelector" class="form-label">Select Instrument</label>
+            <input list="instruments" class="form-control" id="instrumentSelector" placeholder="e.g. AAPL.US">
+            <datalist id="instruments">
+                <!-- JS uzupełni listę -->
+            </datalist>
+        </div>
+
+        <!-- Charts -->
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <canvas id="priceChart" height="100"></canvas>
+            </div>
+            <div class="col-md-6 mb-4">
+                <canvas id="macdChart" height="120"></canvas>
+            </div>
+            <div class="col-md-6 mb-4">
+                <canvas id="volumeChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <!-- Open Positions -->
+        <h4 class="mt-4">Open Positions</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="positionsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Instrument</th>
+                        <th>Type</th>
+                        <th>Open Date</th>
+                        <th>Open Price</th>
+                        <th>Current Price</th>
+                        <th>Volume</th>
+                        <th>Profit (USD)</th>
+                        <th>Profit (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- JS dynamicznie -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Portfolio Summary -->
+        <div class="card p-3 mt-3">
+            <h5>Portfolio Summary</h5>
+            <p>Invested: <span id="invested"></span> USD</p>
+            <p>Free Cash: <span id="free-cash"></span> USD</p>
+            <p>Total Value: <span id="total"></span> USD</p>
+            <p>Profit: <span id="profit"></span> USD (<span id="profit-pct"></span>%)</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_loggedout %}
+
+<section class="bg-light p-4">
+    <div class="container text-center">
+        <h3>Login to see your desktop</h3>
+    </div>
+</section>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='desktop.js') }}"></script> -->
 {% endblock %}
