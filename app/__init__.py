@@ -1,6 +1,7 @@
 from flask import Flask, session
 from flask_socketio import SocketIO
 from flask_dance.contrib.google import make_google_blueprint, google
+from .config import Config
 import os
 
 # from .config import Config
@@ -10,7 +11,7 @@ socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
-    # app.config.from_object(Config())
+    app.config.from_object(Config())
     app.secret_key = "twoj_super_tajny_klucz"
 
     socketio.init_app(app)

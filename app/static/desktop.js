@@ -27,7 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const res = await fetch(`/desktop/api/chart_data/${instrument}`);
         const data = await res.json();
 
-        const { labels, price, macd, volume } = data;
+        const labels = data.map(item => item.timestamp);
+        const price = data.map(item => item.value);
+
+        console.log("labels", labels);
+        console.log("prices", price);
 
         if (priceChart) priceChart.destroy();
         if (macdChart) macdChart.destroy();
