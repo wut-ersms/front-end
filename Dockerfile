@@ -4,7 +4,7 @@ WORKDIR /app
 
 # commons
 RUN apt-get update
-RUN apt-get install -y \ 
+RUN apt-get install -y \
         gcc \
         libffi-dev \
         python3-dev \
@@ -17,8 +17,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app
-EXPOSE 5000
+
 ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_HOST=${FLASK_RUN_HOST}
+ENV FLASK_RUN_PORT=${FLASK_RUN_PORT}
+
+VOLUME [ "/app" ]
 
 CMD ["python", "run.py"]
