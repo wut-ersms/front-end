@@ -2,6 +2,8 @@ from flask import render_template, Blueprint, request, jsonify
 import json
 from .. import socketio
 import logging
+from flask import current_app
+import requests
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -54,29 +56,14 @@ def get_portfolio():
 
 @bp.route("/api/instrument_list", methods=["GET"])
 def get_instruments():
-    instruments = ["AAPL.US", "BTC.USD", "NVDA.US", "GOLD.USD"]
+    instruments = ["AAPL", "BTC", "NVDA", "GOLD"]
     return jsonify(instruments)
 
 
 @bp.route("/api/chart_data/<instrument>", methods=["GET"])
 def get_chart_data(instrument):
-    labels = [
-        "2024-05-10", "2024-05-11", "2024-05-12", "2024-05-13", "2024-05-14",
-        "2024-05-15", "2024-05-16", "2024-05-17", "2024-05-18", "2024-05-19"
-    ]
-    prices = [100, 101, 102, 101.5, 103, 104, 103.5, 105, 106, 107]
-
-    macd_line = [0.5, 0.7, 0.4, 0.6, 0.9, 1.0, 1.1, 1.0, 0.8, 0.9]
-    signal_line = [0.4, 0.5, 0.45, 0.5, 0.6, 0.85, 1.0, 0.95, 0.75, 0.85]
-    histogram = [m - s for m, s in zip(macd_line, signal_line)]
-
-    volume = [1000, 1500, 1700, 1300, 2100, 2000, 2500, 2200, 2600, 2400]
-
-    return jsonify({
-        "labels": labels,
-        "price": prices,
-        "macd_line": macd_line,
-        "signal_line": signal_line,
-        "histogram": histogram,
-        "volume": volume
-    })
+    url = f"{current_app.config['MAIN_SERVICE_URL']}/stock_data/{instrument}/1h"
+    print(url)
+    resp = requests.get(url, timeout=5)
+    resp.raise_for_status()
+    return resp.json()

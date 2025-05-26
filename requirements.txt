@@ -11,3 +11,4 @@ eventlet==0.36.1
 jsonify==0.5
 Flask-Dance[google]==7.1.0
 oauthlib==3.2.2
+requests==2.32.3
