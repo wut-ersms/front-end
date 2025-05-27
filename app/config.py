@@ -2,4 +2,4 @@
 import os
 
 class Config:
-    MAIN_SERVICE_URL = os.environ.get("MAIN_SERVICE_URL", "http://host.docker.internal:8091")
+    MAIN_SERVICE_URL = os.environ.get("MAIN_SERVICE_URL", "http://main-service:8091")
