@@ -7,5 +7,3 @@ services:
       - ${FLASK_RUN_PORT}:${FLASK_RUN_PORT}
     env_file:
       - .env
-    volumes:
-      - .:/app
