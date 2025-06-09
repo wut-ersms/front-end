@@ -28,13 +28,14 @@ def create_app():
     )
     app.register_blueprint(google_bp)
 
-    from .views import main, transactions_history, order, desktop, auth
+    from .views import main, transactions_history, order, desktop, auth, opening
 
     app.register_blueprint(main.bp)
     app.register_blueprint(transactions_history.bp)
     app.register_blueprint(order.bp)
     app.register_blueprint(desktop.bp)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(opening.bp)
 
     @app.context_processor
     def inject_user():
