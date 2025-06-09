@@ -45,10 +45,9 @@
 
   <!-- Animacja -->
   <div id="animation-area" class="text-center my-5" style="display: none;">
-    <div id="case-animation" class="case-box">
-      <div class="lid"></div>
-      <div class="box"></div>
-      <div id="item-flyout" class="item-hidden">🎁</div>
+    <div class="case-img-wrapper position-relative d-inline-block">
+      <img id="case-image" src="{{ url_for('static', filename='img/crypto_case.png') }}" alt="Case" class="img-fluid rounded shadow" style="max-width: 200px;">
+      <div id="item-flyout" class="item-hidden position-absolute top-50 start-50 translate-middle fs-3 fw-bold text-primary">🎁</div>
     </div>
   </div>
 
@@ -80,62 +79,36 @@
 
 <!-- CSS -->
 <style>
-.case-box {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
-}
+    .case-img-wrapper {
+      position: relative;
+      max-width: 200px;
+      margin: 0 auto;
+    }
 
-.lid, .box {
-  width: 100%;
-  height: 50%;
-  background-color: #6c757d;
-  border: 2px solid #343a40;
-}
+    #item-flyout {
+      opacity: 0;
+      animation: flyout 2s ease-out forwards;
+      pointer-events: none;
+    }
 
-.lid {
-  position: absolute;
-  top: 0;
-  transform-origin: bottom;
-  transition: transform 1s ease;
-  z-index: 2;
-}
+    .item-hidden {
+      display: none;
+    }
 
-.box {
-  position: absolute;
-  bottom: 0;
-}
-
-.lid.open {
-  transform: rotateX(120deg);
-}
-
-#item-flyout {
-  font-size: 2rem;
-  margin-top: 20px;
-  animation: flyout 2s ease-out forwards;
-  opacity: 0;
-}
-
-.item-hidden {
-  display: none;
-}
-
-@keyframes flyout {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-150px);
-    opacity: 1;
-  }
-}
-</style>
+    @keyframes flyout {
+      0% {
+        transform: translate(-50%, -50%) translateY(0);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) translateY(-150px);
+        opacity: 1;
+      }
+    }
+    </style>
 
 <!-- JavaScript -->
 <script>
@@ -152,46 +125,46 @@ document.addEventListener("DOMContentLoaded", () => {
       const caseType = btn.getAttribute("data-case-type");
 
       // Reset UI
-      lid.classList.remove("open");
+      const caseImage = document.getElementById("case-image");
       itemFlyout.classList.add("item-hidden");
       itemFlyout.textContent = "🎁";
       animationArea.style.display = "block";
       resultTable.style.display = "none";
 
-      // Animate lid
+      // "Otwórz" skrzynkę (prosty efekt — np. zniknięcie)
       setTimeout(() => {
-        lid.classList.add("open");
+          caseImage.style.opacity = "0.3";
       }, 200);
 
       // Fetch result
       setTimeout(() => {
-        fetch("/opening/open_case", {
+          fetch("/opening/open_case", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+              "Content-Type": "application/json",
           },
           body: JSON.stringify({ case_type: caseType }),
-        })
-        .then(res => res.json())
-        .then(data => {
+          })
+          .then(res => res.json())
+          .then(data => {
           // Show item
           itemFlyout.textContent = data.name;
           itemFlyout.classList.remove("item-hidden");
 
           // Show result
           setTimeout(() => {
-            resultBody.innerHTML = `
+              resultBody.innerHTML = `
               <tr>
-                <td>${data.type}</td>
-                <td>${data.name}</td>
-                <td>${data.volume}</td>
-                <td>${data.open}</td>
-                <td>${data.market_value}</td>
+                  <td>${data.type}</td>
+                  <td>${data.name}</td>
+                  <td>${data.volume}</td>
+                  <td>${data.open}</td>
+                  <td>${data.market_value}</td>
               </tr>
-            `;
-            resultTable.style.display = "block";
+              `;
+              resultTable.style.display = "block";
           }, 1500);
-        });
+          });
       }, 1000);
     });
   });
