@@ -19,7 +19,7 @@
         <div class="card-body">
           <h5 class="card-title">Stock Case</h5>
           <p class="card-text">Contains random stocks</p>
-          <button class="btn btn-primary open-case-btn" data-case-type="stocks">Open Stock Case</button>
+          <button class="btn btn-primary open-case-btn" data-case-type="stocks">Open Stock Case - 9.99$</button>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
         <div class="card-body">
           <h5 class="card-title">ETF Case</h5>
           <p class="card-text">Contains random ETFs</p>
-          <button class="btn btn-success open-case-btn" data-case-type="etfs">Open ETF Case</button>
+          <button class="btn btn-success open-case-btn" data-case-type="etfs">Open ETF Case - 6.99$</button>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
         <div class="card-body">
           <h5 class="card-title">Crypto Case</h5>
           <p class="card-text">Contains random cryptocurrencies</p>
-          <button class="btn btn-warning open-case-btn" data-case-type="crypto">Open Crypto Case</button>
+          <button class="btn btn-warning open-case-btn" data-case-type="crypto">Open Crypto Case - 9.99$</button>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
   <!-- Animacja -->
   <div id="animation-area" class="text-center my-5" style="display: none;">
     <div class="case-img-wrapper position-relative d-inline-block">
-      <img id="case-image" src="{{ url_for('static', filename='img/crypto_case.png') }}" alt="Case" class="img-fluid rounded shadow" style="max-width: 200px;">
+        <img id="case-image" src="{{ url_for('static', filename='img/crypto_case.png') }}" alt="Case" class="img-fluid rounded shadow" style="max-width: 200px; transition: opacity 0.5s ease;">
       <div id="item-flyout" class="item-hidden position-absolute top-50 start-50 translate-middle fs-3 fw-bold text-primary">🎁</div>
     </div>
   </div>
@@ -122,50 +122,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
-      const caseType = btn.getAttribute("data-case-type");
+        const caseType = btn.getAttribute("data-case-type");
+        const caseImage = document.getElementById("case-image");
 
-      // Reset UI
-      const caseImage = document.getElementById("case-image");
-      itemFlyout.classList.add("item-hidden");
-      itemFlyout.textContent = "🎁";
-      animationArea.style.display = "block";
-      resultTable.style.display = "none";
+        // Ustal odpowiedni obrazek
+        const caseImageMap = {
+            stocks: "stock_case.png",
+            etfs: "etf_case.png",
+            crypto: "crypto_case.png"
+        };
 
-      // "Otwórz" skrzynkę (prosty efekt — np. zniknięcie)
-      setTimeout(() => {
-          caseImage.style.opacity = "0.3";
-      }, 200);
+        const imageFilename = caseImageMap[caseType] || "crypto_case.png"; // fallback
 
-      // Fetch result
-      setTimeout(() => {
-          fetch("/opening/open_case", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ case_type: caseType }),
-          })
-          .then(res => res.json())
-          .then(data => {
-          // Show item
-          itemFlyout.textContent = data.name;
-          itemFlyout.classList.remove("item-hidden");
+        // Zmień źródło obrazka
+        caseImage.src = `/static/img/${imageFilename}`;
+        caseImage.style.opacity = "1"; // reset opacity
 
-          // Show result
-          setTimeout(() => {
-              resultBody.innerHTML = `
-              <tr>
-                  <td>${data.type}</td>
-                  <td>${data.name}</td>
-                  <td>${data.volume}</td>
-                  <td>${data.open}</td>
-                  <td>${data.market_value}</td>
-              </tr>
-              `;
-              resultTable.style.display = "block";
-          }, 1500);
-          });
-      }, 1000);
+        // Reset UI
+        itemFlyout.classList.add("item-hidden");
+        itemFlyout.textContent = "🎁";
+        animationArea.style.display = "block";
+        resultTable.style.display = "none";
+
+        // Efekt "otwierania" - lekkie przygaszenie
+        setTimeout(() => {
+            caseImage.style.opacity = "0.3";
+        }, 200);
+
+        // Fetch result
+        setTimeout(() => {
+            fetch("/opening/open_case", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ case_type: caseType }),
+            })
+            .then(res => res.json())
+            .then(data => {
+            // Show item
+            itemFlyout.textContent = data.name;
+            itemFlyout.classList.remove("item-hidden");
+
+            // Show result
+            setTimeout(() => {
+                resultBody.innerHTML = `
+                <tr>
+                    <td>${data.type}</td>
+                    <td>${data.name}</td>
+                    <td>${data.volume}</td>
+                    <td>${data.open}</td>
+                    <td>${data.market_value}</td>
+                </tr>
+                `;
+                resultTable.style.display = "block";
+            }, 1500);
+            });
+        }, 1000);
     });
   });
 });
