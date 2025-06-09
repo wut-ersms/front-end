@@ -1,0 +1,212 @@
+{% extends 'logged_page_base.html' %}
+
+{% block default %}
+<section class="bg-light p-4">
+  <div class="container text-center">
+    <h1>Open Your Financial Cases</h1>
+    <p class="lead">Choose a case to open and reveal your instrument</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content_loggedin %}
+<div class="container my-5">
+
+  <!-- Skrzynki -->
+  <div class="row text-center mb-4">
+    <!-- Stock Case -->
+    <div class="col-md-4">
+      <div class="case-image-container" style="background-image: url('{{ url_for('static', filename='img/stock_case.png') }}');">
+        <div class="case-label">STOCK</div>
+        <button class="btn btn-primary open-case-btn mt-3" data-case-type="stocks">
+          Open – $9.99
+        </button>
+      </div>
+    </div>
+
+    <!-- ETF Case -->
+    <div class="col-md-4">
+      <div class="case-image-container" style="background-image: url('{{ url_for('static', filename='img/etf_case.png') }}');">
+        <div class="case-label">ETF</div>
+        <button class="btn btn-success open-case-btn mt-3" data-case-type="etfs">
+          Open – $6.99
+        </button>
+      </div>
+    </div>
+
+    <!-- Crypto Case -->
+    <div class="col-md-4">
+      <div class="case-image-container" style="background-image: url('{{ url_for('static', filename='img/crypto_case.png') }}');">
+        <div class="case-label">CRYPTO</div>
+        <button class="btn btn-warning open-case-btn mt-3" data-case-type="crypto">
+          Open – $6.99
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Animacja -->
+  <div id="animation-area" class="text-center my-5" style="display: none;">
+    <div id="case-animation" class="case-box">
+      <div class="lid"></div>
+      <div class="box"></div>
+      <div id="item-flyout" class="item-hidden">🎁</div>
+    </div>
+  </div>
+
+  <!-- Wynik -->
+  <div id="case-result" class="mt-5" style="display: none;">
+    <h3 class="text-center mb-4">Case Result</h3>
+    <table class="table table-striped table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Volume</th>
+          <th>Open Price</th>
+          <th>Market Value</th>
+          <!-- <th>Close Price</th>
+          <th>Net Profit</th> -->
+        </tr>
+      </thead>
+      <tbody id="case-result-body">
+        <!-- JS injects data here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Powrót -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Back to Main</a>
+  </div>
+
+</div>
+
+<!-- CSS -->
+<style>
+.case-box {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.lid, .box {
+  width: 100%;
+  height: 50%;
+  background-color: #6c757d;
+  border: 2px solid #343a40;
+}
+
+.lid {
+  position: absolute;
+  top: 0;
+  transform-origin: bottom;
+  transition: transform 1s ease;
+  z-index: 2;
+}
+
+.box {
+  position: absolute;
+  bottom: 0;
+}
+
+.lid.open {
+  transform: rotateX(120deg);
+}
+
+#item-flyout {
+  font-size: 2rem;
+  margin-top: 20px;
+  animation: flyout 2s ease-out forwards;
+  opacity: 0;
+}
+
+.item-hidden {
+  display: none;
+}
+
+@keyframes flyout {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-150px);
+    opacity: 1;
+  }
+}
+</style>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const buttons = document.querySelectorAll(".open-case-btn");
+  const animationArea = document.getElementById("animation-area");
+  const lid = document.querySelector(".lid");
+  const itemFlyout = document.getElementById("item-flyout");
+  const resultTable = document.getElementById("case-result");
+  const resultBody = document.getElementById("case-result-body");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const caseType = btn.getAttribute("data-case-type");
+
+      // Reset UI
+      lid.classList.remove("open");
+      itemFlyout.classList.add("item-hidden");
+      itemFlyout.textContent = "🎁";
+      animationArea.style.display = "block";
+      resultTable.style.display = "none";
+
+      // Animate lid
+      setTimeout(() => {
+        lid.classList.add("open");
+      }, 200);
+
+      // Fetch result
+      setTimeout(() => {
+        fetch("/opening/open_case", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ case_type: caseType }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          // Show item
+          itemFlyout.textContent = data.name;
+          itemFlyout.classList.remove("item-hidden");
+
+          // Show result
+          setTimeout(() => {
+            resultBody.innerHTML = `
+              <tr>
+                <td>${data.type}</td>
+                <td>${data.name}</td>
+                <td>${data.volume}</td>
+                <td>${data.open}</td>
+                <td>${data.market_value}</td>
+              </tr>
+            `;
+            resultTable.style.display = "block";
+          }, 1500);
+        });
+      }, 1000);
+    });
+  });
+});
+</script>
+{% endblock %}
+
+{% block content_loggedout %}
+<section class="bg-light p-4">
+  <div class="container text-center">
+    <h3>Login to open financial cases</h3>
+  </div>
+</section>
+{% endblock %}
