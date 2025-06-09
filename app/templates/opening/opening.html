@@ -14,33 +14,31 @@
 
   <!-- Skrzynki -->
   <div class="row text-center mb-4">
-    <!-- Stock Case -->
     <div class="col-md-4">
-      <div class="case-image-container" style="background-image: url('{{ url_for('static', filename='img/stock_case.png') }}');">
-        <div class="case-label">STOCK</div>
-        <button class="btn btn-primary open-case-btn mt-3" data-case-type="stocks">
-          Open – $9.99
-        </button>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Stock Case</h5>
+          <p class="card-text">Contains random stocks</p>
+          <button class="btn btn-primary open-case-btn" data-case-type="stocks">Open Stock Case</button>
+        </div>
       </div>
     </div>
-
-    <!-- ETF Case -->
     <div class="col-md-4">
-      <div class="case-image-container" style="background-image: url('{{ url_for('static', filename='img/etf_case.png') }}');">
-        <div class="case-label">ETF</div>
-        <button class="btn btn-success open-case-btn mt-3" data-case-type="etfs">
-          Open – $6.99
-        </button>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">ETF Case</h5>
+          <p class="card-text">Contains random ETFs</p>
+          <button class="btn btn-success open-case-btn" data-case-type="etfs">Open ETF Case</button>
+        </div>
       </div>
     </div>
-
-    <!-- Crypto Case -->
     <div class="col-md-4">
-      <div class="case-image-container" style="background-image: url('{{ url_for('static', filename='img/crypto_case.png') }}');">
-        <div class="case-label">CRYPTO</div>
-        <button class="btn btn-warning open-case-btn mt-3" data-case-type="crypto">
-          Open – $6.99
-        </button>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Crypto Case</h5>
+          <p class="card-text">Contains random cryptocurrencies</p>
+          <button class="btn btn-warning open-case-btn" data-case-type="crypto">Open Crypto Case</button>
+        </div>
       </div>
     </div>
   </div>
@@ -65,8 +63,6 @@
           <th>Volume</th>
           <th>Open Price</th>
           <th>Market Value</th>
-          <!-- <th>Close Price</th>
-          <th>Net Profit</th> -->
         </tr>
       </thead>
       <tbody id="case-result-body">
