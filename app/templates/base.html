@@ -46,6 +46,10 @@
                         <a class="nav-link active" href="{{ url_for('opening.index') }}">Case Opening</a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('funds.add_funds_form') }}">Add Funds</a>
+                    </li>
+
                     {% if user_logged_in %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>

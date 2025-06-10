@@ -50,6 +50,8 @@ def create_app():
             "username": user["name"] if user else session.get("username"),
             "user_email": user["email"] if user else None,
             "user_picture": user["picture"] if user else None,
+             "wallet_balance": session.get("wallet_balance", 0.0),
+            "last_amount_added": session.get("last_amount_added", 0.0)
         }
 
     return app

@@ -31,9 +31,10 @@ def google_login():
     session["user"] = {
         "email": user_info["email"],
         "name": user_info["name"],
-        "picture": user_info.get("picture"),
+        "picture": user_info.get("picture")
     }
     session["logged_in"] = True
+    session["wallet_balance"] = 1850.0
 
     return redirect(url_for("main.index"))
 

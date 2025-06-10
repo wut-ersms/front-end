@@ -1,0 +1,33 @@
+{% extends 'logged_page_base.html' %}
+
+{% block content_loggedin %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg w-full text-center">
+    <h2 class="text-5xl font-extrabold mb-6">🎉 Payment Successful! 🎉</h2>
+
+    <p class="text-2xl mb-8">
+      Your new balance is
+      <span class="font-semibold">{{ new_balance | round(2) }} PLN</span>.
+    </p>
+
+ <a
+  href="{{ url_for('main.index') }}"
+  class="block w-full sm:inline-block bg-green-600 hover:bg-green-700 text-black font-bold text-2xl py-4 rounded-lg transition mt-6"
+>
+  Go Back to Dashboard
+</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block content_loggedout %}
+<section class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+    <h3 class="text-4xl font-bold mb-4">Please log in to view this page.</h3>
+    <a href="{{ url_for('auth.login') }}"
+       class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold text-xl px-6 py-3 rounded-lg transition">
+      Log In
+    </a>
+  </div>
+</section>
+{% endblock %}
