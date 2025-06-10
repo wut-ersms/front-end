@@ -28,7 +28,7 @@ def create_app():
     )
     app.register_blueprint(google_bp)
 
-    from .views import main, transactions_history, order, desktop, auth, opening
+    from .views import main, transactions_history, order, desktop, auth, opening, funds
 
     app.register_blueprint(main.bp)
     app.register_blueprint(transactions_history.bp)
@@ -36,6 +36,7 @@ def create_app():
     app.register_blueprint(desktop.bp)
     app.register_blueprint(auth.bp)
     app.register_blueprint(opening.bp)
+    app.register_blueprint(funds.funds_bp)
 
     @app.context_processor
     def inject_user():
