@@ -53,18 +53,20 @@ def submit_add_funds():
         'successPage': success_url,
         'errorPage': error_url
     }
-    # logging.info(payload)
-    # resp = requests.post(f"{PAYMENT_SERVICE_URL}/transaction/new", params=payload)
-    #
-    #
-    # if resp.is_redirect and 'Location' in resp.headers:
-    #     return redirect(resp.headers['Location'])
-    # flash('Payment initiation failed.', 'error')
-    # logging.info("going to succes")
-    # return redirect(url_for('funds.add_funds_form))
-    session['wallet_balance'] = session.get('wallet_balance', 0.0) + to_float(amount)
+    logging.info("Hello")
+    logging.info(payload)
+    resp = requests.post(f"{PAYMENT_SERVICE_URL}/transaction/new", params=payload)
 
-    return redirect(url_for('funds.confirmation'))
+    logging.info(resp.headers)
+
+    if resp.is_redirect and 'Location' in resp.headers:
+        session['wallet_balance'] = session.get('wallet_balance', 0.0) + to_float(amount)
+        return redirect(resp.headers['Location'])
+    flash('Payment initiation failed.', 'error')
+    return redirect(url_for('funds.add_funds_form'))
+    # session['wallet_balance'] = session.get('wallet_balance', 0.0) + to_float(amount)
+    #
+    # return redirect(url_for('funds.confirmation'))
 
 
 @funds_bp.route('/confirmation', methods=['GET'])
