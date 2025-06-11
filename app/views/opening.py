@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, jsonify
+from flask import render_template, Blueprint, request, jsonify, session
 import json
 from .. import socketio
 import logging
@@ -82,12 +82,20 @@ def open_case():
     if case_type not in CASE_CONTENTS:
         return jsonify({"error": "Invalid case type"}), 400
 
+    if case_type == "etfs":
+        session['wallet_balance'] = session.get('wallet_balance', 0.0) - 6.99
+    else:
+        session['wallet_balance'] = session.get('wallet_balance', 0.0) - 9.99
+
     case = CASE_CONTENTS[case_type]
     items = case["items"]
     probabilities = [item["prob"] for item in items]
 
     selected_item = random.choices(items, weights=probabilities, k=1)[0]
-
-    return jsonify(selected_item)
+    response = {
+        **selected_item,
+        "wallet_balance": session['wallet_balance']
+    }
+    return jsonify(response)
 
 
