@@ -16,15 +16,15 @@ funds_bp = Blueprint(
 
 
 # Base URL of the payment service
-PAYMENT_SERVICE_URL = "http://host.docker.internal:8092"  # current_app.config['PAYMENT_SERVICE_URL']
+# PAYMENT_SERVICE_URL = "http://host.docker.internal:8092"  # current_app.config['PAYMENT_SERVICE_URL']
 
 @funds_bp.route('/', methods=['GET'])
 def add_funds_form():
     # Fetch available payment methods
     logging.info(f"Adding funds to {session.get('wallet_balance', 0.0)}")
     try:
-        logging.info(f"{PAYMENT_SERVICE_URL}/channel/all")
-        resp = requests.get(f"{PAYMENT_SERVICE_URL}/channel/all", timeout=5)
+        logging.info(f"{current_app.config['PAYMENT_SERVICE_URL']}/channel/all")
+        resp = requests.get(f"{current_app.config['PAYMENT_SERVICE_URL']}/channel/all", timeout=5)
         resp.raise_for_status()
         data = resp.json()
         logging.info(data)
@@ -55,11 +55,11 @@ def submit_add_funds():
     }
     logging.info("Hello")
     logging.info(payload)
-    resp = requests.post(f"{PAYMENT_SERVICE_URL}/transaction/new", params=payload)
+    resp = requests.post(f"{current_app.config['PAYMENT_SERVICE_URL']}/transaction/new", params=payload)
 
     logging.info(resp.headers)
 
-    if resp.is_redirect and 'Location' in resp.headers:
+    if 'Location' in resp.headers:
         session['wallet_balance'] = session.get('wallet_balance', 0.0) + to_float(amount)
         return redirect(resp.headers['Location'])
     flash('Payment initiation failed.', 'error')
